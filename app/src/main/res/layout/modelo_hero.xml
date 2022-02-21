@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="Capitão América" />
+
+    <TextView
+        android:id="@+id/textViewUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewDelete"
+        android:layout_toStartOf="@+id/textViewDelete"
+        android:layout_toLeftOf="@+id/textViewDelete"
+        android:padding="5dp"
+        android:text="Alterar"
+        android:textColor="#498c1a"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="5dp"
+        android:text="Apagar"
+        android:textColor="#c20a10"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>
