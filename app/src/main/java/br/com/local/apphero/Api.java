@@ -1,7 +1,7 @@
 package br.com.local.apphero;
 
 public class Api {
-    private static final String ROOT_URL = "";
+    private static final String ROOT_URL = "http://10.23.49.31/HeroAPI/v1/Api.php?apicall=";
 
     public static final String URL_CREATE_HERO = ROOT_URL + "createhero";
     public static final String URL_READ_HEROES = ROOT_URL + "getheroes";

@@ -2,8 +2,10 @@ package br.com.local.apphero;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        readHero();
+        readHeroes();
     }
 
     private void createHero() {
@@ -110,8 +112,9 @@ public class MainActivity extends AppCompatActivity {
         request.execute();
     }
 
-    private void readHeroe() {
-        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_HEROES, null, CODE_GET_REQUEST);
+    private void readHeroes() {
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_HEROES,
+                null, CODE_GET_REQUEST);
         request.execute();
     }
 
@@ -175,13 +178,13 @@ public class MainActivity extends AppCompatActivity {
                     obj.getString("teamAffiliation")
             ));
         }
-        HeroAdater adapter = new HeroAdapter(heroList);
+        HeroAdapter adapter = new HeroAdapter(heroList);
         listView.setAdapter(adapter);
     }
 
     private class PerformNetworkRequest extends AsyncTask<Void, Void, String> {
 
-        String url:
+        String url;
         HashMap<String, String> params;
         int requestCode;
 
@@ -201,11 +204,11 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressBar.setVisibility(GONE);
-            try{
+            try {
                 JSONObject object = new JSONObject(s);
-                if(!object.getBoolean("error")) {
+                if (!object.getBoolean("error")) {
                     Toast.makeText(getApplicationContext(), object.getString("message"),
-                            toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT).show();
                     refreshHeroList(object.getJSONArray("heroes"));
                 }
             } catch (JSONException e) {
@@ -252,11 +255,35 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     isUpdating = true;
-                    //CONTINUAR NA PROXIMA AULA
+                    editTextHeroId.setText(String.valueOf(hero.getId()));
+                    editTextName.setText(hero.getName());
+                    editTextRealName.setText(hero.getRealName());
+                    ratingBar.setRating(hero.getRating());
+                    spinnerTeam.setSelection(((ArrayAdapter<String>) spinnerTeam.getAdapter()).getPosition(hero.getTeamaffiliation()));
+                    buttonAddUpdate.setText("Alterar");
                 }
             });
 
-            return super.getView(position, convertView, parent);
+            textViewDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                    builder.setTitle("Apagar" + hero.getName()).setMessage("Tem certeza que deseja excluir?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            deleteHero(hero.getId());
+                        }
+                    }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                }
+            });
+
+            return listViewItem;
         }
     }
 
